@@ -11,9 +11,7 @@ export class ProductStoreService {
 
   async list() {
     return this.http
-      .get(`${this.URL}/product-store`, {
-        // headers: this.getHeaders(),
-      })
+      .get(`${this.URL}/product-store`, {})
       .toPromise()
       .then((res) => {
         return res;
@@ -27,7 +25,7 @@ export class ProductStoreService {
     try {
       return this.http.post(`${this.URL}/product-store`, body).toPromise();
     } catch (error) {
-      throw error; // Lança o erro para ser tratado no código que chama esta função
+      throw error;
     }
   }
 
@@ -35,7 +33,7 @@ export class ProductStoreService {
     try {
       return this.http.get(`${this.URL}/product-store/${id}`).toPromise();
     } catch (error) {
-      throw error; // Lança o erro para ser tratado no código que chama esta função
+      throw error;
     }
   }
 
@@ -43,7 +41,7 @@ export class ProductStoreService {
     try {
       return this.http.delete(`${this.URL}/product-store/${id}`).toPromise();
     } catch (error) {
-      throw error; // Lança o erro para ser tratado no código que chama esta função
+      throw error;
     }
   }
 
@@ -54,7 +52,7 @@ export class ProductStoreService {
         .toPromise();
       return res;
     } catch (error) {
-      throw error; // Lança o erro para ser tratado no código que chama esta função
+      throw error;
     }
   }
 }

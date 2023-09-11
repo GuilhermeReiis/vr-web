@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { ProductComponent } from './product/product.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';

@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/service/product.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ChangeOrAddPriceComponent } from './change-or-add-price/change-or-add-price.component';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-product',

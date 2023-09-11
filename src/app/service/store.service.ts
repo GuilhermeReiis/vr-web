@@ -11,9 +11,7 @@ export class StoreService {
 
   async list() {
     return this.http
-      .get(`${this.URL}/store`, {
-        // headers: this.getHeaders(),
-      })
+      .get(`${this.URL}/store`, {})
       .toPromise()
       .then((res) => {
         return res;

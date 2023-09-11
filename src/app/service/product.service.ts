@@ -14,7 +14,6 @@ export class ProductService {
   async list(filters: any) {
     return this.http
       .get(`${this.URL}/product`, {
-        // headers: this.getHeaders(),
         params: new HttpParams({ fromObject: filters }),
       })
       .toPromise()
@@ -31,7 +30,7 @@ export class ProductService {
       const res = await this.http.post(`${this.URL}/product`, body).toPromise();
       return res;
     } catch (error) {
-      throw error; // Lança o erro para ser tratado no código que chama esta função
+      throw error;
     }
   }
 
@@ -40,7 +39,7 @@ export class ProductService {
       const res = await this.http.put(`${this.URL}/product`, body).toPromise();
       return res;
     } catch (error) {
-      throw error; // Lança o erro para ser tratado no código que chama esta função
+      throw error;
     }
   }
 
@@ -51,7 +50,7 @@ export class ProductService {
         .toPromise();
       return res;
     } catch (error) {
-      throw error; // Lança o erro para ser tratado no código que chama esta função
+      throw error;
     }
   }
 
@@ -62,7 +61,7 @@ export class ProductService {
         .toPromise();
       return res;
     } catch (error) {
-      throw error; // Lança o erro para ser tratado no código que chama esta função
+      throw error;
     }
   }
 }

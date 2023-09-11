@@ -292,30 +292,4 @@ export class CreateOrEditProductComponent implements OnInit {
       }
     });
   }
-
-  // onFileSelected(event: any) {
-  //   const file: File = event.target.files[0];
-  //   if (file) {
-  //     this.convertFileToByteArray(file).then((byteArray) => {
-  //       console.log(byteArray);
-  //       this.Form.patchValue({
-  //         image: byteArray,
-  //       });
-  //     });
-  //   }
-  // }
-
-  // async convertFileToByteArray(file: File): Promise<Uint8Array> {
-  //   return new Promise<Uint8Array>((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onload = (event: any) => {
-  //       const byteArray = new Uint8Array(event.target.result);
-  //       resolve(byteArray);
-  //     };
-  //     reader.onerror = (error) => {
-  //       reject(error);
-  //     };
-  //     reader.readAsArrayBuffer(file);
-  //   });
-  // }
 }
