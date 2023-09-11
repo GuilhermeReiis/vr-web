@@ -15,47 +15,54 @@
 
 <div class="button-line"></div>
 
-<div class="container text-center">
-  <div class="row">
-    <div class="col-2 textinput">
-      Codigo
-      <input
-        type="text"
-        class="form-control"
-        aria-label="Username"
-        aria-describedby="addon-wrapping"
-      />
-    </div>
-    <div class="col-4 textinput">
-      Descrição
-      <input
-        type="text"
-        class="form-control"
-        aria-label="Username"
-        aria-describedby="addon-wrapping"
-      />
-    </div>
-    <div class="col-2 textinput">
-      Custo
-      <input
-        type="text"
-        class="form-control"
-        aria-label="Username"
-        aria-describedby="addon-wrapping"
-      />
-    </div>
-    <div class="col-2 textinput">
-      Preço de Venda
-      <input
-        type="text"
-        class="form-control"
-        aria-label="Username"
-        aria-describedby="addon-wrapping"
-      />
+<form [formGroup]="searchForm">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-2 textinput">
+        Codigo
+        <input
+          type="text"
+          class="form-control"
+          aria-label="Username"
+          aria-describedby="addon-wrapping"
+          formControlName="id"
+        />
+      </div>
+      <div class="col-4 textinput">
+        Descrição
+        <input
+          type="text"
+          class="form-control"
+          aria-label="Username"
+          aria-describedby="addon-wrapping"
+          formControlName="description"
+        />
+      </div>
+      <div class="col-2 textinput">
+        Custo
+        <input
+          type="text"
+          class="form-control"
+          aria-label="Username"
+          aria-describedby="addon-wrapping"
+          formControlName="amount"
+          placeholder="R$ 0,00"
+        />
+      </div>
+      <div class="col-2 textinput">
+        Preço de Venda
+        <input
+          type="text"
+          class="form-control"
+          aria-label="Username"
+          aria-describedby="addon-wrapping"
+          formControlName="amountPrice"
+          currencyMask
+        />
+      </div>
     </div>
   </div>
-</div>
-
+</form>
 <br />
 
 <div class="container text-center">
@@ -74,7 +81,7 @@
             <th scope="row">{{ item.id }}</th>
             <td>{{ item.description }}</td>
             <td class="buttonActions">
-              {{ item.amount / 100 }}
+              {{ item.amount | currency : "BRL" }}
               <div style="margin-left: 30%">
                 <button
                   type="button"
@@ -97,4 +104,27 @@
       </table>
     </div>
   </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      <li class="page-item">
+        <a
+          class="page-link"
+          (click)="tablePage('previous')"
+          *ngIf="actualPage > 1"
+          ><i class="fa-solid fa-chevron-left"></i
+        ></a>
+      </li>
+      <li class="page-item">
+        <a class="page-link">{{ searchForm.value.page }}</a>
+      </li>
+      <li class="page-item">
+        <a
+          class="page-link"
+          (click)="tablePage('next')"
+          *ngIf="actualPage < totalPage"
+          ><i class="fa-solid fa-chevron-right"></i
+        ></a>
+      </li>
+    </ul>
+  </nav>
 </div>

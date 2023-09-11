@@ -4,7 +4,7 @@ import { ProductService } from 'src/app/service/product.service';
 import Swal from 'sweetalert2';
 import { ChangeOrAddPriceComponent } from '../change-or-add-price/change-or-add-price.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductStoreService } from 'src/app/service/product-store.service';
 
 @Component({
@@ -25,13 +25,14 @@ export class CreateOrEditProductComponent implements OnInit {
     private productService: ProductService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
-    private productStoreService: ProductStoreService
+    private productStoreService: ProductStoreService,
+    private router: Router
   ) {
     this.Form = this.formBuilder.group({
       id: ['', Validators.required],
       description: ['', [Validators.required, Validators.maxLength(200)]],
       amount: ['', Validators.maxLength(200)],
-      image: ['', Validators.maxLength(200)],
+      // image: [null, Validators.required],
     });
     this.route.queryParams.subscribe((params: any) => {
       if (params._productId) {
@@ -50,6 +51,7 @@ export class CreateOrEditProductComponent implements OnInit {
         id: this._productId,
         description: this.product.description,
         amount: this.product.amount,
+        image: this.product.image,
       });
     }
   }
@@ -106,6 +108,7 @@ export class CreateOrEditProductComponent implements OnInit {
           icon: 'success',
           showConfirmButton: false,
         });
+        this.router.navigate(['/produto']);
       })
       .catch(() => {
         Swal.close();
@@ -187,7 +190,7 @@ export class CreateOrEditProductComponent implements OnInit {
     });
   }
 
-  async delete(_productId: string) {
+  async delete(_productStoreId: string) {
     Swal.fire({
       title: 'Tem certeza?',
       text: 'Não será possível reverter essa ação!',
@@ -205,7 +208,7 @@ export class CreateOrEditProductComponent implements OnInit {
         });
 
         this.productStoreService
-          .delete(_productId)
+          .delete(_productStoreId)
           .then(() => {
             Swal.close();
             Swal.fire({
@@ -241,4 +244,78 @@ export class CreateOrEditProductComponent implements OnInit {
       this.load();
     });
   }
+
+  back() {
+    this.router.navigate(['/produto']);
+  }
+
+  async deleteproduct(_productId: string) {
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: 'Não será possível reverter essa ação!',
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Aguarde',
+          text: 'Deletando...',
+          icon: 'info',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+        });
+
+        this.productService
+          .delete(_productId)
+          .then(() => {
+            Swal.close();
+            Swal.fire({
+              title: 'Sucesso',
+              icon: 'success',
+              showConfirmButton: false,
+            });
+          })
+          .catch(() => {
+            Swal.close();
+            Swal.fire({
+              title: 'Erro',
+              icon: 'error',
+              showConfirmButton: false,
+            });
+          })
+          .finally(() => {
+            this.router.navigate(['/produto']);
+          });
+      } else {
+        Swal.close();
+      }
+    });
+  }
+
+  // onFileSelected(event: any) {
+  //   const file: File = event.target.files[0];
+  //   if (file) {
+  //     this.convertFileToByteArray(file).then((byteArray) => {
+  //       console.log(byteArray);
+  //       this.Form.patchValue({
+  //         image: byteArray,
+  //       });
+  //     });
+  //   }
+  // }
+
+  // async convertFileToByteArray(file: File): Promise<Uint8Array> {
+  //   return new Promise<Uint8Array>((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.onload = (event: any) => {
+  //       const byteArray = new Uint8Array(event.target.result);
+  //       resolve(byteArray);
+  //     };
+  //     reader.onerror = (error) => {
+  //       reject(error);
+  //     };
+  //     reader.readAsArrayBuffer(file);
+  //   });
+  // }
 }

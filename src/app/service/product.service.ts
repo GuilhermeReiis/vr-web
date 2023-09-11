@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { IProductCreate } from './interfaces/interfaces.service';
@@ -11,10 +11,11 @@ export class ProductService {
   constructor(private http: HttpClient) {}
   URL = 'http://localhost:3000';
 
-  async list() {
+  async list(filters: any) {
     return this.http
       .get(`${this.URL}/product`, {
         // headers: this.getHeaders(),
+        params: new HttpParams({ fromObject: filters }),
       })
       .toPromise()
       .then((res) => {

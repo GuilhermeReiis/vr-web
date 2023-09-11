@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ProductStoreService } from 'src/app/service/product-store.service';
 import Swal from 'sweetalert2';
 
@@ -14,7 +14,8 @@ export class ChangeOrAddPriceComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private productStoreService: ProductStoreService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog
   ) {
     this.Form = this.formBuilder.group({
       store: ['', Validators.required],
@@ -38,7 +39,7 @@ export class ChangeOrAddPriceComponent implements OnInit {
   async onSubmit() {
     if (this.data.amount) {
       await this.update();
-      return;
+      return this.closeModal();
     }
     Swal.fire({
       title: 'Aguarde',
@@ -64,6 +65,9 @@ export class ChangeOrAddPriceComponent implements OnInit {
           icon: 'error',
           showConfirmButton: false,
         });
+      })
+      .finally(() => {
+        this.closeModal();
       });
   }
 
@@ -93,5 +97,9 @@ export class ChangeOrAddPriceComponent implements OnInit {
           showConfirmButton: false,
         });
       });
+  }
+
+  closeModal() {
+    this.dialog.closeAll();
   }
 }

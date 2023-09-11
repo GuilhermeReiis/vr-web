@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChangeOrAddPriceComponent } from './change-or-add-price/change-or-add-price.component';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-product',
@@ -11,20 +12,42 @@ import { Router } from '@angular/router';
   styleUrls: ['./product.component.scss'],
 })
 export class ProductComponent implements OnInit {
-  constructor(private productService: ProductService, private router: Router) {}
+  searchForm;
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) {
+    this.searchForm = this.formBuilder.group({
+      page: [1],
+      limit: [10],
+      id: ['', Validators.required],
+      description: ['', [Validators.required, Validators.maxLength(200)]],
+      amount: ['', Validators.maxLength(200)],
+      amountPrice: ['', Validators.maxLength(200)],
+      totalPage: [''],
+    });
+  }
   data = [] as any;
+  totalPage = 0;
+  actualPage = 0;
 
   ngOnInit() {
     this.load();
+    this.searchForm.valueChanges.subscribe(() => {
+      this.load();
+    });
   }
 
   openCreate() {
-    window.location.href = 'http://localhost:4200/produto/cadastro';
+    this.router.navigate(['/produto/cadastro']);
   }
 
   async load() {
-    this.productService.list().then((res) => {
-      this.data = res;
+    await this.productService.list(this.searchForm.value).then((res) => {
+      this.data = res.items;
+      this.totalPage = res.totalPages;
+      this.actualPage = res.page;
     });
   }
 
@@ -76,5 +99,18 @@ export class ProductComponent implements OnInit {
     this.router.navigate(['/produto/edicao'], {
       queryParams: { _productId: id },
     });
+  }
+
+  async tablePage(mode: 'previous' | 'next') {
+    const { page, limit } = this.searchForm.value;
+    if (mode === 'previous' && page) {
+      this.searchForm.patchValue({ page: page - 1 });
+    }
+
+    if (mode === 'next' && page) {
+      this.searchForm.patchValue({ page: page + 1 });
+    }
+
+    await this.load();
   }
 }
